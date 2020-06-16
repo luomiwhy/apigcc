@@ -39,7 +39,7 @@ public class SpringParser implements ParserStrategy {
     public void onLoad() {
         Apigcc.getInstance().getTypeResolvers().addResolver(new SpringComponentResolver());
         Apigcc.getInstance().getTypeResolvers().addNameResolver(new SpringComponentResolver());
-        Apigcc.getInstance().getContext().getCodeTypeDeclarations().add(new PageTypeDeclaration());
+//        Apigcc.getInstance().getContext().getCodeTypeDeclarations().add(new PageTypeDeclaration());
     }
 
     /**
