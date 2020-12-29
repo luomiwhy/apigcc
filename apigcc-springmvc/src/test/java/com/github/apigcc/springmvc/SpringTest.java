@@ -39,8 +39,9 @@ public class SpringTest {
         Context context = new Context();
         context.setId("ava");
         context.setName("AVA");
-        context.addSource(Paths.get("E:/avalokitesvara/application/src/main/java/com/dingdingzn/avalokitesvara/api/dms/equipment/"));
-        context.addDependency(Paths.get("E:/avalokitesvara"));
+        context.setUrlPrefix("/ava");
+        context.addSource(Paths.get("E:\\workspace\\springcloud\\healthych-ac01\\src\\main\\java\\com\\healthych\\ac\\controller\\web"));
+        context.addDependency(Paths.get("E:\\workspace\\springcloud\\healthych-ac01"));
 //        context.addDependency(Paths.get("E:/denpendency/spring-data-commons-2.1.10.RELEASE-sources/"));
 //        context.setCss("https://darshandsoni.com/asciidoctor-skins/css/monospace.css");
 //        context.addJar(Paths.get("E:\\apigcc-hub\\build\\dependency\\spring-data-commons-2.2.3.RELEASE-sources.jar"));

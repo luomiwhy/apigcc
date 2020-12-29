@@ -83,6 +83,11 @@ public class Context {
      */
     @Setter
     private String css;
+    /**
+     * 生成的链接前缀prefix
+     */
+    @Setter
+    private String urlPrefix;
 
     public void addSource(Path path){
         sources.add(path);

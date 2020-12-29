@@ -21,7 +21,7 @@ public class PostmanRender implements ProjectRender {
         Postman postman = build(project);
         String id = Apigcc.getInstance().getContext().getId();
         Path buildPath = Apigcc.getInstance().getContext().getBuildPath();
-        Path file = buildPath.resolve(id).resolve("postman_v2_1.json");
+        Path file = buildPath.resolve(id).resolve(id + "_postman_v2_1.json");
         FileHelper.write(file, ObjectMappers.pretty(postman));
         log.info("Build Postman {}", file);
     }

@@ -1,6 +1,7 @@
 package com.github.apigcc.springmvc;
 
 import com.github.apigcc.core.Apigcc;
+import com.github.apigcc.core.Context;
 import com.github.apigcc.core.common.URI;
 import com.github.apigcc.core.description.ObjectTypeDescription;
 import com.github.apigcc.core.description.TypeDescription;
@@ -29,6 +30,8 @@ public class SpringParser implements ParserStrategy {
     public static final String EXT_URI = "uri";
 
     public static final List<String> ANNOTATION_CONTROLLERS = Lists.newArrayList(ANNOTATION_CONTROLLER, ANNOTATION_REST_CONTROLLER);
+
+    private static final Context context = Apigcc.getInstance().getContext();
 
     @Override
     public String name() {
@@ -111,7 +114,11 @@ public class SpringParser implements ParserStrategy {
     private void visitUri(MethodDeclaration n, Chapter chapter, Section section) {
         URI uri = new URI((String) chapter.getExt().get(EXT_URI));
         uri.add(RequestMappingHelper.pickUri(n.getAnnotations()));
-        section.setUri(uri.toString());
+        if (context.getUrlPrefix() != null) {
+            section.setUri(context.getUrlPrefix() + uri.toString());
+        }else {
+            section.setUri(uri.toString());
+        }
     }
 
     /**

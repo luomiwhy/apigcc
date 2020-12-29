@@ -36,6 +36,7 @@ public class AsciidocRender implements ProjectRender {
 
         Path buildPath = Apigcc.getInstance().getContext().getBuildPath();
         Path projectBuildPath = buildPath.resolve(project.getId());
+        String id = Apigcc.getInstance().getContext().getId();
 
         project.getBooks().forEach((name, book) -> {
             MarkupBuilder builder = MarkupBuilder.getInstance();
@@ -91,7 +92,7 @@ public class AsciidocRender implements ProjectRender {
                 }
             }
 
-            Path adocFile = projectBuildPath.resolve(name + AsciiDoc.EXTENSION);
+            Path adocFile = projectBuildPath.resolve(id + "_" + name + AsciiDoc.EXTENSION);
             FileHelper.write(adocFile, builder.getContent());
             log.info("Build AsciiDoc {}", adocFile);
         });
