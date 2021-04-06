@@ -14,7 +14,11 @@ import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -88,6 +92,16 @@ public class Context {
      */
     @Setter
     private String urlPrefix;
+    /**
+     * 要排除url的匹配
+     */
+    private String urlExcludeYmlPath;
+    private List<String> urlExcludeList;
+    /**
+     * 只生成某些url的匹配
+     */
+    private String urlOnlyYmlPath;
+    private List<String> urlOnlyList;
 
     public void addSource(Path path){
         sources.add(path);
@@ -145,4 +159,19 @@ public class Context {
         return typeSolver;
     }
 
+    public void setUrlExcludeYmlPath(String urlExcludeYmlPath) throws FileNotFoundException {
+        this.urlExcludeYmlPath = urlExcludeYmlPath;
+        Yaml yaml = new Yaml();
+        if (urlExcludeYmlPath != null && urlExcludeYmlPath.length() > 0) {
+            this.urlExcludeList = yaml.load(new FileInputStream(new File(urlExcludeYmlPath)));
+        }
+    }
+
+    public void setUrlOnlyYmlPath(String urlOnlyYmlPath) throws FileNotFoundException {
+        this.urlOnlyYmlPath = urlOnlyYmlPath;
+        Yaml yaml = new Yaml();
+        if (urlOnlyYmlPath != null && urlOnlyYmlPath.length() > 0) {
+            this.urlOnlyList = yaml.load(new FileInputStream(new File(urlOnlyYmlPath)));
+        }
+    }
 }

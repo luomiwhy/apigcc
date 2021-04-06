@@ -40,6 +40,8 @@ public class SpringTest {
         context.setId("ava");
         context.setName("AVA");
         context.setUrlPrefix("/ava");
+        context.setUrlOnlyYmlPath("D:\\opt\\apigcc\\urlOnly.yaml");
+        context.setUrlExcludeYmlPath("");
         context.addSource(Paths.get("E:\\workspace\\springcloud\\healthych-ac01\\src\\main\\java\\com\\healthych\\ac\\controller\\web"));
         context.addDependency(Paths.get("E:\\workspace\\springcloud\\healthych-ac01"));
 //        context.addDependency(Paths.get("E:/denpendency/spring-data-commons-2.1.10.RELEASE-sources/"));

@@ -45,7 +45,7 @@ public class PostmanRender implements ProjectRender {
                 chapterFolder.setName(chapter.getName());
                 chapterFolder.setDescription(chapter.getDescription());
                 for (Section section : chapter.getSections()) {
-                    if(section.isIgnore()){
+                    if(section.isIgnore() || shouldSkipRender(section)){
                         continue;
                     }
                     chapterFolder.getItem().add(build(section));
