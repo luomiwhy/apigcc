@@ -2,6 +2,7 @@ allprojects {
 
     apply plugin: 'java'
     apply plugin: 'maven'
+    apply plugin: 'maven-publish'
     apply plugin: 'com.novoda.bintray-release'
 
     group 'com.github.apigcc'
@@ -50,6 +51,25 @@ allprojects {
 //    bintrayUser = project.BINTRAYUSER
 //    bintrayKey = project.BINTRAYKEY
         dryRun = false
+    }
+    //上传到nexus
+    publishing {
+        publications {
+            mavenNexus(MavenPublication) {
+                groupId = group
+                artifactId = "apigcc-springmvc"
+                version = version
+            }
+        }
+        repositories {
+            maven { url ""
+                credentials {
+                    username ''
+                    password ''
+                }
+            }
+
+        }
     }
 }
 
