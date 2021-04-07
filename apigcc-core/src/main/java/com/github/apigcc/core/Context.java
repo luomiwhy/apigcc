@@ -16,7 +16,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -105,7 +104,9 @@ public class Context {
 
     public void addSource(Path path){
         sources.add(path);
-        sources.addAll(FileHelper.find(path, DEFAULT_CODE_STRUCTURE));
+//        sources.addAll(FileHelper.find(path, DEFAULT_CODE_STRUCTURE));
+        // 只处理controller子目录
+        sources.addAll(FileHelper.find(path.resolve(DEFAULT_CODE_STRUCTURE), "controller"));
         addDependency(path);
     }
 

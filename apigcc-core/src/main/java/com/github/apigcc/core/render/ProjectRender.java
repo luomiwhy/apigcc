@@ -13,12 +13,12 @@ public interface ProjectRender {
     /**
      * 有only只以only为准，否则以exclude为准
      */
-    default boolean shouldSkipRender(Section section){
+    default boolean shouldRender(Section section){
         List<String> list = Apigcc.getInstance().getContext().getUrlOnlyList();
         if (list.isEmpty()) {
-            return Apigcc.getInstance().getContext().getUrlExcludeList().contains(section.getUri());
+            return !Apigcc.getInstance().getContext().getUrlExcludeList().contains(section.getUri());
         }else {
-            return !list.contains(section.getUri());
+            return list.contains(section.getUri());
         }
 
     }

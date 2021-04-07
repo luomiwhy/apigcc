@@ -9,6 +9,8 @@ import com.github.apigcc.core.schema.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Path;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Postman v2.1 json文件构建
@@ -41,11 +43,15 @@ public class PostmanRender implements ProjectRender {
                 if(chapter.isIgnore() || chapter.getSections().isEmpty()){
                     continue;
                 }
+                Set<Section> sectionSet = chapter.getSections().stream().filter(this::shouldRender).collect(Collectors.toSet());
+                if (sectionSet.isEmpty()) {
+                    continue;
+                }
                 Folder chapterFolder = new Folder();
                 chapterFolder.setName(chapter.getName());
                 chapterFolder.setDescription(chapter.getDescription());
                 for (Section section : chapter.getSections()) {
-                    if(section.isIgnore() || shouldSkipRender(section)){
+                    if(section.isIgnore()){
                         continue;
                     }
                     chapterFolder.getItem().add(build(section));

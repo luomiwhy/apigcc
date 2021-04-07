@@ -15,10 +15,8 @@ import org.asciidoctor.SafeMode;
 import org.asciidoctor.jruby.AsciiDocDirectoryWalker;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 构建并渲染adoc文档
@@ -53,10 +51,14 @@ public class AsciidocRender implements ProjectRender {
                 if (chapter.isIgnore() || chapter.getSections().isEmpty()) {
                     continue;
                 }
+                Set<Section> sectionSet = chapter.getSections().stream().filter(this::shouldRender).collect(Collectors.toSet());
+                if (sectionSet.isEmpty()) {
+                    continue;
+                }
                 builder.title(1, chapter.getName());
                 builder.paragraph(chapter.getDescription());
-                for (Section section : chapter.getSections()) {
-                    if(section.isIgnore() || shouldSkipRender(section)){
+                for (Section section : sectionSet) {
+                    if(section.isIgnore()){
                         continue;
                     }
                     builder.title(2, section.getName());
