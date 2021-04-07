@@ -160,19 +160,27 @@ public class Context {
         return typeSolver;
     }
 
-    public void setUrlExcludeYmlPath(String urlExcludeYmlPath) throws FileNotFoundException {
+    public void setUrlExcludeYmlPath(String urlExcludeYmlPath) {
         this.urlExcludeYmlPath = urlExcludeYmlPath;
         Yaml yaml = new Yaml();
         if (urlExcludeYmlPath != null && urlExcludeYmlPath.length() > 0) {
-            this.urlExcludeList = yaml.load(new FileInputStream(urlExcludeYmlPath));
+            try {
+                this.urlExcludeList = yaml.load(new FileInputStream(urlExcludeYmlPath));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    public void setUrlOnlyYmlPath(String urlOnlyYmlPath) throws FileNotFoundException {
+    public void setUrlOnlyYmlPath(String urlOnlyYmlPath) {
         this.urlOnlyYmlPath = urlOnlyYmlPath;
         Yaml yaml = new Yaml();
         if (urlOnlyYmlPath != null && urlOnlyYmlPath.length() > 0) {
-            this.urlOnlyList = yaml.load(new FileInputStream(urlOnlyYmlPath));
+            try {
+                this.urlOnlyList = yaml.load(new FileInputStream(urlOnlyYmlPath));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

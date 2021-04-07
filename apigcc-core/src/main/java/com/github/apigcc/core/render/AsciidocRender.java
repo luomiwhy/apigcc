@@ -113,7 +113,7 @@ public class AsciidocRender implements ProjectRender {
                 .mkDirs(true)
                 .inPlace(true)
                 .toDir(projectBuildPath.toFile())
-                .safe(SafeMode.SAFE)
+                .safe(SafeMode.UNSAFE)
                 .attributes(attributes);
         Asciidoctor.Factory.create()
                 .convertDirectory(new AsciiDocDirectoryWalker(projectBuildPath.toString()), builder.get());
