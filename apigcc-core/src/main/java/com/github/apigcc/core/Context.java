@@ -163,7 +163,7 @@ public class Context {
         this.urlExcludeYmlPath = urlExcludeYmlPath;
         Yaml yaml = new Yaml();
         if (urlExcludeYmlPath != null && urlExcludeYmlPath.length() > 0) {
-            this.urlExcludeList = yaml.load(new FileInputStream(new File(urlExcludeYmlPath)));
+            this.urlExcludeList = yaml.load(new FileInputStream(urlExcludeYmlPath));
         }
     }
 
@@ -171,7 +171,7 @@ public class Context {
         this.urlOnlyYmlPath = urlOnlyYmlPath;
         Yaml yaml = new Yaml();
         if (urlOnlyYmlPath != null && urlOnlyYmlPath.length() > 0) {
-            this.urlOnlyList = yaml.load(new FileInputStream(new File(urlOnlyYmlPath)));
+            this.urlOnlyList = yaml.load(new FileInputStream(urlOnlyYmlPath));
         }
     }
 }
