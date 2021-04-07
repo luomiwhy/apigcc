@@ -3,6 +3,6 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.10.3'
     implementation 'org.asciidoctor:asciidoctorj:2.2.0'
     // https://mvnrepository.com/artifact/org.yaml/snakeyaml
-    implementation group: 'org.yaml', name: 'snakeyaml', version: '1.26'
-
+    compile group: 'org.yaml', name: 'snakeyaml', version: '1.26'
+    compile group: 'org.springframework', name: 'spring-webmvc', version: '5.1.0.RELEASE'
 }

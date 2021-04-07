@@ -13,6 +13,7 @@ import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.utils.SourceRoot;
 import com.google.common.collect.Iterables;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -31,6 +32,9 @@ public class Apigcc {
 
     @Getter
     private Context context;
+    @Getter
+    @Setter
+    private ExtConfig extConfig;
     @Getter
     private Project project = new Project();
 

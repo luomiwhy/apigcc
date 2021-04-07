@@ -2,18 +2,20 @@ package com.github.apigcc.springmvc;
 
 import com.github.apigcc.core.Apigcc;
 import com.github.apigcc.core.Context;
+import com.github.apigcc.core.DirModule;
+import com.github.apigcc.core.ExtConfig;
 import com.github.apigcc.core.common.diff.FileMatcher;
-import com.github.apigcc.core.common.helper.FileHelper;
-import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import org.junit.Test;
-import org.springframework.data.domain.Page;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SpringTest {
 
@@ -35,22 +37,29 @@ public class SpringTest {
 
     @Test
     public void test() throws IOException {
+        String extYamlPath = "D:\\opt\\apigcc\\urlOnly.yaml";
+        Yaml yaml = new Yaml(new Constructor(ExtConfig.class));
+        ExtConfig extConfig = (ExtConfig) yaml.load(new FileInputStream(extYamlPath));
+        List<Path> dirList = Files.walk(Paths.get(extConfig.getRootDir()), extConfig.getMaxDepth())
+                .filter(p -> extConfig.getModules().stream().anyMatch(m -> m.getDirName().equals(p.getFileName().toString()))).collect(Collectors.toList());
 
-        Context context = new Context();
-        context.setId("ava");
-        context.setName("AVA");
-        context.setUrlPrefix("/ava");
-        context.setUrlOnlyYmlPath("D:\\opt\\apigcc\\urlOnly.yaml");
-        context.setUrlExcludeYmlPath("");
-        context.addSource(Paths.get("E:\\workspace\\springcloud\\healthych-ac01\\src\\main\\java\\com\\healthych\\ac\\controller\\web"));
-        context.addDependency(Paths.get("E:\\workspace\\springcloud\\healthych-ac01"));
-//        context.addDependency(Paths.get("E:/denpendency/spring-data-commons-2.1.10.RELEASE-sources/"));
-//        context.setCss("https://darshandsoni.com/asciidoctor-skins/css/monospace.css");
-//        context.addJar(Paths.get("E:\\apigcc-hub\\build\\dependency\\spring-data-commons-2.2.3.RELEASE-sources.jar"));
+        for (Path path : dirList) {
+            String name = path.getFileName().toString();
+            DirModule dirModule = extConfig.getModules().stream().filter(m -> m.getDirName().equals(name)).findFirst().get();
+            Context context = new Context();
+            context.setId(name);
+            context.setName(name);
+            context.setUrlPrefix(dirModule.getUrlPrefix());
+            context.addSource(path);
+            context.addDependency(path);
+            extConfig.getJars().forEach(s -> context.addJar(Paths.get(s)));
+            context.setBuildPath(Paths.get(extConfig.getBuildPath()));
 
-        Apigcc apigcc = new Apigcc(context);
-        apigcc.parse();
-        apigcc.render();
+            Apigcc apigcc = new Apigcc(context);
+            apigcc.setExtConfig(extConfig);
+            apigcc.parse();
+            apigcc.render();
+        }
     }
 
 
