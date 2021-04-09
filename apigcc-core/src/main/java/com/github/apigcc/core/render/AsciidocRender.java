@@ -68,7 +68,10 @@ public class AsciidocRender implements ProjectRender {
                     builder.title(4, "request");
                     builder.listing(b -> {
                         b.textLine(section.getRequestLine());
-                        section.getInHeaders().values().forEach(header -> builder.textLine("header: " + header.toString()));
+                        section.getInHeaders().values().forEach(header -> {
+                            Optional<Tag> tag = section.tag("param:" + header.getKey());
+                            builder.textLine("header: " + header.toString() + "  " + (tag.isPresent() ? tag.get().getContent() : ""));
+                        });
                         if (section.hasRequestBody()) {
                             b.br();
                             b.text(section.getParameterString());
