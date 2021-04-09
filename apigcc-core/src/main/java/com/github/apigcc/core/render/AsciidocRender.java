@@ -99,26 +99,29 @@ public class AsciidocRender implements ProjectRender {
             log.info("Build AsciiDoc {}", adocFile);
         });
 
-        //渲染adoc文件
-        AttributesBuilder attributes = AttributesBuilder.attributes();
-        attributes.sectionNumbers(true);
-        attributes.noFooter(true);
-        String css = Apigcc.getInstance().getContext().getCss();
-        if (StringHelper.nonBlank(css)) {
-            attributes.linkCss(true);
-            attributes.styleSheetName(css);
-        }
-        //asciidoctorj 的 options
-        OptionsBuilder builder = OptionsBuilder.options()
-                .mkDirs(true)
-                .inPlace(true)
-                .toDir(projectBuildPath.toFile())
-                .safe(SafeMode.UNSAFE)
-                .attributes(attributes);
-        Asciidoctor.Factory.create()
-                .convertDirectory(new AsciiDocDirectoryWalker(projectBuildPath.toString()), builder.get());
+        Boolean renderHtml = Apigcc.getInstance().getExtConfig().getRenderHtml();
+        if (renderHtml != null && renderHtml) {
+            //渲染adoc文件
+            AttributesBuilder attributes = AttributesBuilder.attributes();
+            attributes.sectionNumbers(true);
+            attributes.noFooter(true);
+            String css = Apigcc.getInstance().getContext().getCss();
+            if (StringHelper.nonBlank(css)) {
+                attributes.linkCss(true);
+                attributes.styleSheetName(css);
+            }
+            //asciidoctorj 的 options
+            OptionsBuilder builder = OptionsBuilder.options()
+                    .mkDirs(true)
+                    .inPlace(true)
+                    .toDir(projectBuildPath.toFile())
+                    .safe(SafeMode.UNSAFE)
+                    .attributes(attributes);
+            Asciidoctor.Factory.create()
+                    .convertDirectory(new AsciiDocDirectoryWalker(projectBuildPath.toString()), builder.get());
 
-        log.info("Render AsciiDoc to html {}", projectBuildPath);
+            log.info("Render AsciiDoc to html {}", projectBuildPath);
+        }
     }
 
     private void table(MarkupBuilder builder, Collection<Row> rows) {

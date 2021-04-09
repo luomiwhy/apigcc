@@ -18,6 +18,11 @@ public class ExtConfig {
     }
 
     /**
+     * adoc渲染html
+     */
+    @Setter
+    private Boolean renderHtml;
+    /**
      * 文档生成目录
      */
     @Setter

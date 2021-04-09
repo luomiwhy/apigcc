@@ -3,7 +3,6 @@ package com.github.apigcc.core;
 import com.github.apigcc.core.common.helper.FileHelper;
 import com.github.apigcc.core.declaration.CodeTypeDeclaration;
 import com.github.apigcc.core.render.AsciidocRender;
-import com.github.apigcc.core.render.PostmanRender;
 import com.github.apigcc.core.render.ProjectRender;
 import com.github.javaparser.symbolsolver.model.resolution.TypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
@@ -39,8 +38,9 @@ public class Context {
 
     @Setter
     public List<ProjectRender> renders = Lists.newArrayList(
-            new AsciidocRender(),
-            new PostmanRender());
+//            new PostmanRender(),
+            new AsciidocRender()
+    );
 
     @Setter
     private Path buildPath = Paths.get(DEFAULT_BUILD_PATH);
