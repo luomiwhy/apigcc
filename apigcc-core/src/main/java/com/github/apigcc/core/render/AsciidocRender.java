@@ -68,7 +68,7 @@ public class AsciidocRender implements ProjectRender {
                     builder.title(4, "request");
                     builder.listing(b -> {
                         b.textLine(section.getRequestLine());
-                        section.getInHeaders().values().forEach(header->builder.textLine(header.toString()));
+                        section.getInHeaders().values().forEach(header -> builder.textLine("header: " + header.toString()));
                         if (section.hasRequestBody()) {
                             b.br();
                             b.text(section.getParameterString());
@@ -80,7 +80,7 @@ public class AsciidocRender implements ProjectRender {
                     builder.title(4, "response");
 
                     builder.listing(b -> {
-                        section.getOutHeaders().values().forEach(header -> builder.textLine(header.toString()));
+                        section.getOutHeaders().values().forEach(header -> builder.textLine("header: " + header.toString()));
                         if (section.hasResponseBody()) {
                             b.br();
                             b.text(section.getResponseString());
