@@ -47,7 +47,7 @@ public class AsciidocRender implements ProjectRender {
                 builder.paragraph("version:" + project.getVersion());
             }
             builder.paragraph(project.getDescription());
-            for (Chapter chapter : book.getChapters()) {
+            for (Chapter chapter : book.getChapters().stream().sorted().collect(Collectors.toList())) {
                 if (chapter.isIgnore() || chapter.getSections().isEmpty()) {
                     continue;
                 }
@@ -57,8 +57,8 @@ public class AsciidocRender implements ProjectRender {
                 }
                 builder.title(1, chapter.getName());
                 builder.paragraph(chapter.getDescription());
-                for (Section section : sectionSet) {
-                    if(section.isIgnore()){
+                for (Section section : sectionSet.stream().sorted().collect(Collectors.toList())) {
+                    if (section.isIgnore()) {
                         continue;
                     }
                     builder.title(2, section.getName());
