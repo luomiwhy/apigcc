@@ -1,6 +1,7 @@
 package com.github.apigcc.core;
 
 import com.github.apigcc.core.common.helper.StringHelper;
+import com.github.apigcc.core.common.markup.MarkupBuilder;
 import com.github.apigcc.core.parser.ParserStrategy;
 import com.github.apigcc.core.parser.VisitorParser;
 import com.github.apigcc.core.render.ProjectRender;
@@ -18,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.ServiceLoader;
 
@@ -43,6 +46,9 @@ public class Apigcc {
 
     @Getter
     private TypeResolvers typeResolvers = new TypeResolvers();
+
+    @Getter
+    private List<MarkupBuilder> markupBuilderList = new ArrayList<>();
 
     private Apigcc() {
         init(new Context());

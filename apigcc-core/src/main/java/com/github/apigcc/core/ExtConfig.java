@@ -23,6 +23,16 @@ public class ExtConfig {
     @Setter
     private Boolean renderHtml;
     /**
+     * 是否合并为一个adoc
+     */
+    @Setter
+    private Boolean mergeToOneFile;
+    /**
+     * 合并adoc文件名
+     */
+    @Setter
+    private String mergeFileName;
+    /**
      * 文档生成目录
      */
     @Setter

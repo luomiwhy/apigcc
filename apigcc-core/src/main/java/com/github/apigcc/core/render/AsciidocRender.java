@@ -36,6 +36,8 @@ public class AsciidocRender implements ProjectRender {
         Path projectBuildPath = buildPath.resolve(project.getId());
         String id = Apigcc.getInstance().getContext().getId();
 
+        final Boolean mergeToOneFile = Optional.ofNullable(Apigcc.getInstance().getExtConfig().getMergeToOneFile()).orElse(Boolean.FALSE);
+
         project.getBooks().forEach((name, book) -> {
             MarkupBuilder builder = MarkupBuilder.getInstance();
             String displayName = project.getName();
@@ -97,9 +99,13 @@ public class AsciidocRender implements ProjectRender {
                 }
             }
 
-            Path adocFile = projectBuildPath.resolve(id + "_" + name + AsciiDoc.EXTENSION);
-            FileHelper.write(adocFile, builder.getContent());
-            log.info("Build AsciiDoc {}", adocFile);
+            if (mergeToOneFile) {
+                Apigcc.getInstance().getMarkupBuilderList().add(builder);
+            }else {
+                Path adocFile = projectBuildPath.resolve(id + "_" + name + AsciiDoc.EXTENSION);
+                FileHelper.write(adocFile, builder.getContent());
+                log.info("Build AsciiDoc {}", adocFile);
+            }
         });
 
         Boolean renderHtml = Apigcc.getInstance().getExtConfig().getRenderHtml();

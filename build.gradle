@@ -4,13 +4,12 @@ allprojects {
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: 'com.novoda.bintray-release'
-    apply plugin: "com.github.johnrengelman.shadow"
 
     group 'com.github.apigcc'
     version '1.7.2'
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 1.11
+    targetCompatibility = 1.11
 
     [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
@@ -80,7 +79,6 @@ buildscript {
     }
     dependencies {
         classpath 'com.novoda:bintray-release:0.8.1'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
     }
 }
 
