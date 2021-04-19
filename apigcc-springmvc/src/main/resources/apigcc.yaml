@@ -1,0 +1,16 @@
+mergeToOneFile: true
+mergeFileName: 11111
+renderHtml: false
+buildPath: 111111
+jars:
+  - 11111
+rootDir: 11111
+maxDepth: 1
+modules:
+  - dirName: 1111111
+    urlPrefix: /111
+urlOnly:
+  - /11//11/11
+urlExclude:
+  - /**/111/**
+
