@@ -42,4 +42,14 @@ public class FileHelper {
         return Lists.newArrayList();
     }
 
+    public static List<Path> findJars(Path start){
+        try {
+            return Files.walk(start)
+                    .filter(p->p.toString().endsWith(".jar") && !p.toString().endsWith("sources.jar")).collect(Collectors.toList());
+        } catch (IOException e) {
+            log.warn("find path error:{} {}", start, e.getMessage());
+        }
+        return Lists.newArrayList();
+    }
+
 }

@@ -17,18 +17,19 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class MainClass {
     public static void main(String[] args) throws IOException {
-        String extYamlPath = "apigcc.yaml";
+        String extYamlPath = "D:\\opt\\apigcc\\apigcc.yaml";
         Yaml yaml = new Yaml(new Constructor(ExtConfig.class));
         ExtConfig extConfig = (ExtConfig) yaml.load(new FileInputStream(extYamlPath));
         List<Path> dirList = Files.walk(Paths.get(extConfig.getRootDir()), extConfig.getMaxDepth())
                 .filter(p -> extConfig.getModules().stream().anyMatch(m -> m.getDirName().equals(p.getFileName().toString()))).collect(Collectors.toList());
 
+        List<Path> jars = new ArrayList<>();
+        extConfig.getJars().forEach(s -> jars.addAll(FileHelper.findJars(Paths.get(s))));
         List<MarkupBuilder> builderList = new ArrayList<>();
         for (Path path : dirList) {
             String name = path.getFileName().toString();
@@ -38,8 +39,9 @@ public class MainClass {
             context.setName(name);
             context.setUrlPrefix(dirModule.getUrlPrefix());
             context.addSource(path);
-            context.addDependency(path);
-            extConfig.getJars().forEach(s -> context.addJar(Paths.get(s)));
+//            context.addDependency(path);
+//            extConfig.getJars().forEach(s -> context.addJar(Paths.get(s)));
+            jars.forEach(context::addJar);
             context.setBuildPath(Paths.get(extConfig.getBuildPath()));
 
             Apigcc apigcc = new Apigcc(context);
