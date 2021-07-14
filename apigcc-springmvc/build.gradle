@@ -1,5 +1,6 @@
 dependencies {
     compile project(":apigcc-core")
+    implementation 'org.asciidoctor:asciidoctorj:2.2.0'
 
     testCompile group: 'org.springframework', name: 'spring-webmvc', version: '5.1.0.RELEASE'
     testCompile group: 'org.springframework.data', name: 'spring-data-commons', version: '2.2.6.RELEASE'
@@ -23,6 +24,6 @@ jar {
     }
 }
 
-tasks.withType(Jar) {
-    destinationDir = file("D:\\opt\\apigcc")      //$rootDir 取项目的顶级目录
-}
+//tasks.withType(Jar) {
+//    destinationDir = file("D:\\opt\\apigcc")      //$rootDir 取项目的顶级目录
+//}

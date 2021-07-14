@@ -38,10 +38,12 @@ public class AsciidocRender implements ProjectRender {
 
         final Boolean mergeToOneFile = Optional.ofNullable(Apigcc.getInstance().getExtConfig().getMergeToOneFile()).orElse(Boolean.FALSE);
 
-        project.getBooks().forEach((name, book) -> {
+        for (Map.Entry<String, Book> entry : project.getBooks().entrySet()) {
+            String name = entry.getKey();
+            Book book = entry.getValue();
             MarkupBuilder builder = MarkupBuilder.getInstance();
             String displayName = project.getName();
-            if(!Objects.equals(Book.DEFAULT, name)){
+            if (!Objects.equals(Book.DEFAULT, name)) {
                 displayName += " - " + name;
             }
             builder.header(displayName, attrs);
@@ -89,7 +91,7 @@ public class AsciidocRender implements ProjectRender {
                         if (section.hasResponseBody()) {
                             b.br();
                             b.text(section.getResponseString());
-                        }else{
+                        } else {
                             b.text("N/A");
                         }
                     }, "source,JSON");
@@ -101,35 +103,38 @@ public class AsciidocRender implements ProjectRender {
 
             if (mergeToOneFile) {
                 Apigcc.getInstance().getMarkupBuilderList().add(builder);
-            }else {
+            } else {
                 Path adocFile = projectBuildPath.resolve(id + "_" + name + AsciiDoc.EXTENSION);
                 FileHelper.write(adocFile, builder.getContent());
                 log.info("Build AsciiDoc {}", adocFile);
             }
-        });
+        }
 
-        Boolean renderHtml = Apigcc.getInstance().getExtConfig().getRenderHtml();
-        if (renderHtml != null && renderHtml) {
-            //渲染adoc文件
-            AttributesBuilder attributes = AttributesBuilder.attributes();
-            attributes.sectionNumbers(true);
-            attributes.noFooter(true);
-            String css = Apigcc.getInstance().getContext().getCss();
-            if (StringHelper.nonBlank(css)) {
-                attributes.linkCss(true);
-                attributes.styleSheetName(css);
+        if (mergeToOneFile){}
+        else {
+            Boolean renderHtml = Apigcc.getInstance().getExtConfig().getRenderHtml();
+            if (renderHtml != null && renderHtml) {
+                //渲染adoc文件
+                AttributesBuilder attributes = AttributesBuilder.attributes();
+                attributes.sectionNumbers(true);
+                attributes.noFooter(true);
+                String css = Apigcc.getInstance().getContext().getCss();
+                if (StringHelper.nonBlank(css)) {
+                    attributes.linkCss(true);
+                    attributes.styleSheetName(css);
+                }
+                //asciidoctorj 的 options
+                OptionsBuilder builder = OptionsBuilder.options()
+                        .mkDirs(true)
+                        .inPlace(true)
+                        .toDir(projectBuildPath.toFile())
+                        .safe(SafeMode.UNSAFE)
+                        .attributes(attributes);
+                Asciidoctor.Factory.create()
+                        .convertDirectory(new AsciiDocDirectoryWalker(projectBuildPath.toString()), builder.get());
+
+                log.info("Render AsciiDoc to html {}", projectBuildPath);
             }
-            //asciidoctorj 的 options
-            OptionsBuilder builder = OptionsBuilder.options()
-                    .mkDirs(true)
-                    .inPlace(true)
-                    .toDir(projectBuildPath.toFile())
-                    .safe(SafeMode.UNSAFE)
-                    .attributes(attributes);
-            Asciidoctor.Factory.create()
-                    .convertDirectory(new AsciiDocDirectoryWalker(projectBuildPath.toString()), builder.get());
-
-            log.info("Render AsciiDoc to html {}", projectBuildPath);
         }
     }
 

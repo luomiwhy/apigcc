@@ -16,6 +16,7 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.google.common.collect.Lists;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -113,10 +114,10 @@ public class SpringParser implements ParserStrategy {
         URI uri = new URI((String) chapter.getExt().get(EXT_URI));
         uri.add(RequestMappingHelper.pickUri(n.getAnnotations()));
         Context context = Apigcc.getInstance().getContext();
-        if (context.getUrlPrefix() != null) {
-            section.setUri(context.getUrlPrefix() + uri.toString());
-        }else {
+        if (StringUtils.isEmpty(context.getUrlPrefix())) {
             section.setUri(uri.toString());
+        }else {
+            section.setUri(context.getUrlPrefix() + uri.toString());
         }
     }
 
